@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<head>
+<body class="app aside-menu-fixed sidebar-lg-show" style="background-color: #096F0E">
+<div class="mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden"
+     style="color: #FFFFFF">
+    <div class="my-3 py-3">
+        <h2 class="display-5">New Form</h2>
+        <p class="lead">Conditional Form</p>
+    </div>
+    <div class="bg-light box-shadow mx-auto p-5 text-left text-black-50"
+         style="width: 80%; height: 100%; border-radius: 21px 21px 21px 21px;">
+        <div id="fb-editor"></div>
+
+    </div>
+</div>
+<!-- you need this div for the modal choosing -->
+<div class="modal fade" id="modal-form-dependson" tab-index="-1" role="dialog" aria-labelledby="myModal"
+     aria-hidden="true">
+    <div class="modal-dialog modal-primary" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Depends On Configuration</h4>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="formbuilder-text form-group row" style="display: flex;">
+                        <label for="depends_on_field" class="col-sm-4 col-form-label">Depended On Field</label>
+                        <div class="col-sm-8">
+                            <select id="depends_on_field" class="form-control">
+                            </select>
+                        </div>
+                    </div>
+                    <div id="depends_on_radio-group" class="formbuilder-text form-group row" style="display: none;">
+                        <label for="depends_on_radio-group" class="col-sm-4 col-form-label">Radio Button</label>
+                        <div class="col-sm-8">
+                            <!--
+                            <div class="radio-group" id="depends_on_radio-group_container">
+                                <div class="formbuilder-radio">
+                                    <input name="depends_on_radio_choice" value="" id="" type="radio"><label for=""></label>
+                                </div>
+                            </div>
+                            -->
+                            <select id="depends_on_radio-group_container"></select>
+                            is chosen
+                        </div>
+                    </div>
+                    <div id="depends_on_checkbox-group" class="formbuilder-text form-group row" style="display: none;">
+                        <label for="depends_on_checkbox-group" class="col-sm-4 col-form-label">Checkbox</label>
+                        <div class="col-sm-8">
+                            <select id="depends_on_checkbox-group_container"></select>
+                            is <input type="checkbox" id="depends_on_checkbox_checkbox"/>
+                        </div>
+                    </div>
+                    <div id="depends_on_select" class="formbuilder-text form-group row" style="display: none;">
+                        <label for="depends_on_select" class="col-sm-4 col-form-label">Option</label>
+                        <div class="col-sm-8">
+                            <select id="depends_on_select_container"></select>
+                            is selected
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button name="depends-on-save" type="button" class="btn btn-outline-primary btn-sm pull-left">Save
+                </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://formbuilder.online/assets/js/form-builder.min.js"></script>
+<script src="depends_setup.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script>
+
+    $(function () {
+        div = $("#fb-editor");
+        myFormBuilder = div.formBuilder(
+            addDependsOn({
+                // add your setup here
+            })
+        );
+
+        myFormBuilder.promise.then(formBuilder => {
+                formBuilder.actions.setData(
+                    '[{"type":"text","required":true,"label":"First Name","description":"The first name of the user","placeholder":"Joe","className":"form-control","name":"text-1590233841964","subtype":"text"},{"type":"text","required":true,"label":"Surname","description":"The surname of the user","placeholder":"Bloggs","className":"form-control","name":"text-1590263684643","subtype":"text"},{"type":"select","required":true,"label":"Select Showing","className":"form-control","name":"select-1","values":[{"label":"File Upload","value":"file","selected":true},{"label":"Text Area","value":"text"},{"label":"Paragraph","value":"paragraph"},{"label":"Checkboxes","value":"checkbox"}]},{"type":"checkbox-group","required":true,"label":"Checkbox Group","toggle":false,"inline":false,"name":"checkbox-group-1590626553748","other":false,"dependson_type":"select","dependson_code":"select:select-1:checkbox","values":[{"label":"Option 1","value":"option-1"},{"label":"Option 2","value":"option-2"}]},{"type":"file","required":true,"label":"File Upload","className":"form-control","name":"file-1590612724784","subtype":"file","multiple":false,"dependson_type":"select","dependson_code":"select:select-1:file"},{"type":"textarea","required":true,"label":"Text Area","className":"form-control","name":"textarea-1590613977962","subtype":"textarea","dependson_type":"select","dependson_code":"select:select-1:text"},{"type":"paragraph","subtype":"p","label":"Paragraph","dependson_type":"select","dependson_code":"select:select-1:paragraph"},{"type":"checkbox-group","required":true,"label":"Show Stuff","toggle":false,"inline":false,"name":"checkbox-group-1590527722259","other":false,"values":[{"label":"Date","value":"date"},{"label":"Email","value":"email"}]},{"type":"date","required":true,"label":"Date Field","className":"form-control","name":"date-1590612707088","dependson_type":"checkbox-group","dependson_code":"checkbox-group:checkbox-group-1590527722259:date:checked"},{"type":"text","required":true,"label":"Email Address","className":"form-control","name":"text-1590342667192","subtype":"text","pattern":".*@.*","dependson_type":"checkbox-group","dependson_code":"checkbox-group:checkbox-group-1590527722259:email:checked"},{"type":"radio-group","required":true,"label":"Show Some Radio","inline":false,"name":"myradiogroup","other":false,"values":[{"label":"Number","value":"number"},{"label":"Radio","value":"radio"},{"label":"Select","value":"select"}]},{"type":"number","required":true,"label":"Number","className":"form-control","name":"number-1590612744792","min":5,"max":10,"dependson_type":"radio-group","dependson_code":"radio-group:myradiogroup:number"},{"type":"radio-group","required":true,"label":"Radio Group 2","inline":false,"name":"second-radio","other":false,"dependson_type":"radio-group","dependson_code":"radio-group:myradiogroup:radio","values":[{"label":"Chose","value":"option-1"},{"label":"Me","value":"option-2"},{"label":"Option 3","value":"option-3"}]},{"type":"select","required":true,"label":"Select","className":"form-control","name":"select-1590624165437","dependson_type":"radio-group","dependson_code":"radio-group:myradiogroup:select","values":[{"label":"Option 1","value":"option-1","selected":true},{"label":"Option 2","value":"option-2"},{"label":"Option 3","value":"option-3"}]}]'
+                );
+            }
+        );
+    });
+
+</script>
+</body>
+</html>
