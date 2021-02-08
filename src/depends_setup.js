@@ -29,7 +29,7 @@ function addDependsOn(options) {
                     $('.form-builder .form-field[type=' + selected + ']').each(function () {
                         let field_value = $('.fld-name', this).val();
                         let field_name = $('.fld-label', this).html();
-                        if(field_value != my_field_name) {
+                        if (field_value != my_field_name) {
                             $('#depends_on_field').append(new Option(field_name, field_value));
                         }
                     });
@@ -99,8 +99,8 @@ function DependsOnSave(src_select_field, dst_select_field, option_type, code_sel
 }
 
 function resetDependsOptionNames(type_selector) {
-    $(type_selector).children('option').each(function() {
-        if($(this).val() == 'checkbox-group') {
+    $(type_selector).children('option').each(function () {
+        if ($(this).val() == 'checkbox-group') {
             $(this).text("when checkbox ....");
         } else if ($(this).val() == 'radio-group') {
             $(this).text("when radio button ....");
@@ -139,16 +139,19 @@ function setDependsOptionName(code, type_selector) {
     } else {
         type_selector_option = $(type_selector).children('option[value=""]');
     }
-    type_selector_option.prop('selected',true);
+    type_selector_option.prop('selected', true);
 }
 
 function setOptions(src_select_field, dst_select_field, option_type) {
     let depends_on_field_name = $(src_select_field).children('option:selected').val();
-    let options = $('input[name=' + depends_on_field_name + '-option].option-value');
-    let option_labels = $('input[name=' + depends_on_field_name + '-option].option-label');
     let select_box = $(dst_select_field);
+
+    const form = JSON.parse(myFormBuilder.actions.getData('json', true));
+    const element = form.find(element => element.name === depends_on_field_name);
+
     select_box.empty();
-    options.each(function (index) {
-        select_box.append(new Option($(option_labels[index]).val(), $(options[index]).val()));
+
+    element.values.forEach(function (option) {
+        select_box.append(new Option(option.label, option.value));
     });
 }
